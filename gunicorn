@@ -1,1 +1,1 @@
-web: gunicorn app:random-jokes-api
+web: gunicorn random-jokes-api:random-jokes-api
