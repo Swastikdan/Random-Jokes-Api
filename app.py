@@ -2,12 +2,12 @@ import json
 from flask import Flask, jsonify, request
 import random
 
-random_jokes_api = Flask(__name__)
+app = Flask(__name__)
 
 with open('jokes.json', 'r', encoding='utf-8') as file:
     jokes = json.load(file)
 
-@random_jokes_api.route('/api/random-joke', methods=['GET'])
+@app.route('/api/random-joke', methods=['GET'])
 def get_random_joke():
     joke_type = request.args.get('type')  # Get the joke type from the query parameters
     if joke_type:
@@ -20,4 +20,4 @@ def get_random_joke():
         return jsonify(random.choice(jokes))
 
 if __name__ == '__main__':
-    random_jokes_api.run(debug=True)
+    app.run(debug=True)
