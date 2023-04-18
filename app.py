@@ -7,7 +7,7 @@ app = Flask(__name__)
 jokes = [
             {
                 "Id": 1,
-                "_comment": "Jokes Taken from https: //github.com/15Dkatz/official_joke_api"
+                "_comment": "Jokes Taken from https://github.com/15Dkatz/official_joke_api"
             },
             {
                 "type": "general",
