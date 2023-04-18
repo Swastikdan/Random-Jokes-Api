@@ -1,7 +1,7 @@
 
 # Jokes API
 
-This project is a simple Flask API that serves jokes from a list. It supports returning random jokes and filtering jokes by type. The jokes are taken from 15Dkatz/official_joke_api
+This project is a simple Flask API that serves jokes from a list. It supports returning random jokes and filtering jokes by type. The jokes are taken from https: //github.com/15Dkatz/official_joke_api
 
 
 ## Installation
