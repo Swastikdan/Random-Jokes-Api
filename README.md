@@ -10,12 +10,12 @@ This project is a simple Flask API that serves jokes from a list. It supports re
 
 
 ```bash
-git clone https://github.com/yourusername/jokes-api.git
+git clone https://github.com/Swastikdan/Random-Jokes-Api.git
 
 ```
 #### 2. Navigate to the project directory.
 ```bash
-cd jokes-api
+cd Random-Jokes-Api
 
 ```
 #### 3. Install the required dependencies.
