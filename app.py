@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 import sqlite3
 
 app = Flask(__name__)
@@ -8,6 +8,12 @@ def get_db_connection(db_name):
     conn = sqlite3.connect(db_name)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+# Route to open index.html
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # Route to get a single-liner joke
 @app.route('/api/singleliner')

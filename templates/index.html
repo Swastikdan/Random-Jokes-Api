@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokes API</title>
+    <style>    body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+h2 {
+    color: #555;
+    margin-top: 30px;
+}
+
+p {
+    color: #777;
+}
+
+pre {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+code {
+    font-family: Consolas, monospace;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+table th,
+table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f5f5f5;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+      </style>
+</head>
+<body>
+    <h1>Jokes API</h1>
+
+    <p>
+        This is a Flask app that provides two API routes to get random jokes or a specific joke by ID from two different databases, "jokes.db" and "singleliner.db".
+    </p>
+
+    <h2>Installation</h2>
+
+    <ol>
+        <li>Clone this repository.</li>
+        <pre><code>git clone https://github.com/Swastikdan/Random-Jokes-Api.git</code></pre>
+
+        <li>Navigate to the project directory.</li>
+        <pre><code>cd Random-Jokes-Api</code></pre>
+
+        <li>Install the required dependencies.</li>
+        <pre><code>pip install -r requirements.txt</code></pre>
+    </ol>
+
+    <h2>Usage</h2>
+
+    <p>To start the server, run:</p>
+    <pre><code>python app.py</code></pre>
+
+    <p>The app will start running on <code>http://localhost:5000/</code></p>
+
+    <h2>API Endpoints</h2>
+
+    <p>Get a random joke or a specific joke by ID</p>
+    <ul>
+        <li><code>/api/jokes</code></li>
+        <li><code>/api/singleliner</code></li>
+    </ul>
+
+    <p>Request parameters:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Example</th>
+                <th>Requests</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>result</td>
+                <td>int</td>
+                <td>The number of jokes to return. Defaults to 1.</td>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>int</td>
+                <td>The ID of a specific joke to return.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Example Requests:</p>
+    <pre><code>/api/jokes?result=2</code></pre>
+    <pre><code>/api/singleliner?id=3bf77</code></pre>
+
+    <p>Example Response:</p>
+    <pre><code>[
+  {
+    "id": "ee1d3",
+    "punchline": "#3 Swim with the sharks,\n#2 Have an account on Ashley Madison, \n#1 riding a street car in Charlotte NC. \n",
+    "setup": "The Top Three things for Halloween you can do now in North Carolina:"
+  },
+  {
+    "id": "88720",
+    "punchline": "We played smash bros from 12 to 12!",
+    "setup": "My girlfriend told me, &quot;I wanna smash!&quot;"
+  }
+]</code></pre>
+    <pre><code>[
+  {
+    "id": "3bf77",
+    "joke": "Married Couple Friend:hey how's your married life buddy..... Jhon: 20 years before it was like heaven ....... 20 years after no fucks given"
+  }
+]</code></pre>
+
+    <h2>Database Schema</h2>
+
+    <p>The "jokes.db" database has a table called "jokes" with the following columns:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>id</td>
+                <td>int</td>
+                <td>The unique ID of the joke.</td>
+            </tr>
+            <tr>
+                <td>setup</td>
+                <td>text</td>
+                <td>The setup of the joke.</td>
+            </tr>
+            <tr>
+                <td>punchline</td>
+                <td>text</td>
+                <td>The punchline of the joke.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>The "singleliner.db" database has a table called "singleliner" with the following columns:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>id</td>
+                <td>int</td>
+                <td>The unique ID of the single-liner joke.</td>
+            </tr>
+            <tr>
+                <td>joke</td>
+                <td>text</td>
+                <td>The text of the single-liner joke.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Live Preview</h2>
+
+    <p>You can try out this application live on Heroku at the following links:</p>
+
+    <ul>
+        <li><a href="https://jokemasterapi.vercel.app/api/jokes">https://jokemasterapi.vercel.app/api/jokes</a></li>
+        <li><a href="https://jokemasterapi.vercel.app/api/singleliner">https://jokemasterapi.vercel.app/api/singleliner</a></li>
+    </ul>
+
+    <p>Please note that the demo version may not have the full functionality of the locally hosted version and may be slower due to the limitations of the hosting platform. Additionally, this demo version is intended for demonstration purposes only and is not intended for use in a production environment.</p>
+
+    <h2>Contributing</h2>
+
+    <p>Contributions are always welcome!</p>
+
+    <h2>License</h2>
+
+    <p>This project is licensed under the <a href="https://choosealicense.com/licenses/mit/">MIT License</a>.</p>
+</body>
+</html>
