@@ -99,13 +99,13 @@ The "singleliner.db" database has a table called "singleliner" with the followin
 You can try out this application live on Heroku at the following links:
 
 ``` 
-https://random-joke-api.swastikdan.tech/api/jokes 
+https://jokemasterapi.vercel.app/api/jokes
 
 ```
 
 
 ``` 
-https://random-joke-api.swastikdan.tech/api/singleliner 
+https://jokemasterapi.vercel.app/api/singleliner
 
 ```
 Please note that the demo version may not have the full functionality of the locally hosted version and may be slower due to the limitations of the hosting platform. Additionally, this demo version is intended for demonstration purposes only and is not intended for use in a production environment.
