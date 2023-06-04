@@ -1,9 +1,6 @@
-# Import required libraries
-from random import randint
 from flask import Flask, jsonify, request
 import sqlite3
 
-# Initialize Flask app
 app = Flask(__name__)
 
 # Function to connect to the database
@@ -16,7 +13,7 @@ def get_db_connection(db_name):
 @app.route('/api/singleliner')
 def get_singleliner_joke():
     # Get query parameters
-    result = request.args.get('result', 1, type=int)
+    result = request.args.get('result', default=1, type=int)
     id = request.args.get('id')
     
     # Connect to the database
@@ -33,15 +30,20 @@ def get_singleliner_joke():
     conn.close()
     
     # Return the joke(s) as JSON
-    return jsonify([dict(j) for j in jokes])
+    response = {'success': True, 'jokes': [dict(j) for j in jokes]} if jokes else {'success': False}
+    return jsonify(response)
 
 # Route to get a joke
 @app.route('/api/jokes')
 def get_joke():
     # Get query parameters
-    result = request.args.get('result', 1, type=int)
+    result = request.args.get('result', default=1, type=int)
     id = request.args.get('id')
     
+    # Check if result exceeds 10
+    if result > 10:
+        return jsonify({'success': False, 'error': 'Parameter value not allowed. Maximum value for "result" is 10.'})
+
     # Connect to the database
     conn = get_db_connection('jokes.db')
 
@@ -54,10 +56,9 @@ def get_joke():
 
     # Close the database connection
     conn.close()
-    
-    # Return the joke(s) as JSON
-    return jsonify([dict(j) for j in jokes])
 
-# Run the app
+    response = {'success': True, 'jokes': [dict(j) for j in jokes]} if jokes else {'success': False}
+    return jsonify(response)
+
 if __name__ == '__main__':
     app.run(debug=False)
