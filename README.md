@@ -23,7 +23,20 @@ cd Random-Jokes-Api
 pip install -r requirements.txt
 
 ```
+## Live Preview
+You can try out this application live  at the following links:
 
+``` 
+https://jokemasterapi.vercel.app/api/jokes
+
+```
+
+
+``` 
+https://jokemasterapi.vercel.app/api/singleliner
+
+```
+Please note that the demo version may not have the full functionality of the locally hosted version and may be slower due to the limitations of the hosting platform. Additionally, this demo version is intended for demonstration purposes only and is not intended for use in a production environment.
 ## Usage
 
 ##### To start the server, run:
@@ -95,20 +108,7 @@ The "singleliner.db" database has a table called "singleliner" with the followin
 |----------|----------|----------|
 | id | int| The unique ID of the single-liner joke. |
 | joke| text | The text of the single-liner joke. |
-## Live Preview
-You can try out this application live on Heroku at the following links:
 
-``` 
-https://jokemasterapi.vercel.app/api/jokes
-
-```
-
-
-``` 
-https://jokemasterapi.vercel.app/api/singleliner
-
-```
-Please note that the demo version may not have the full functionality of the locally hosted version and may be slower due to the limitations of the hosting platform. Additionally, this demo version is intended for demonstration purposes only and is not intended for use in a production environment.
 ## Contributing
 
 Contributions are always welcome!
