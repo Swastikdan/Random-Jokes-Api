@@ -1,14 +1,18 @@
+// Import required modules
 require('dotenv').config();
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const { MongoClient } = require('mongodb');
 const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression');
-const cors = require('cors'); 
-const app = express();
-const PASSWORD = process.env.Password;
+const cors = require('cors');
 
+// Initialize express app
+const app = express();
+
+// Set constants
+const PASSWORD = process.env.Password;
 const MAX_RESULTS = 10;
 
 // Use Helmet for basic security
@@ -16,90 +20,122 @@ app.use(helmet());
 
 // Use compression
 app.use(compression());
+
+// Enable CORS
 app.use(cors());
-// Rate limiting
+
+// Set up rate limiting
 const limiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 60 minutes
-    max: 1000 // limit each IP to 1000 requests per windowMs
+    max: 1000, // limit each IP to 1000 requests per windowMs
 });
 app.use(limiter);
+
+// Serve static files from 'public' directory
 app.use(express.static('public'));
-let singleLinerDb = new sqlite3.Database('singleliner.db');
-let jokesDb = new sqlite3.Database('jokes.db');
 
-app.get('/api/singleliner', (req, res) => {
-    let result = req.query.result || 1;
-    let id = req.query.id;
-    let password = req.query.password;
-    let sql;
+// MongoDB connection string
+const uri = process.env.MONGODB_URI;
 
-    if (result > MAX_RESULTS && (!password || !PASSWORD.includes(password))) {
-        res.json({success: false, error: `Parameter value not allowed. Maximum value for "result" is ${MAX_RESULTS}.`});
-        return;
+let client;
+
+(async () => {
+    try {
+        // Connect to MongoDB
+        client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        console.log('Connected to MongoDB');
+
+        // Get reference to 'Jokes' database
+        const db = client.db('Jokes');
+
+        // Define '/api/singleliner' route
+        app.get('/api/singleliner', async (req, res) => {
+            // Parse query parameters
+            let result = parseInt(req.query.result) || 1;
+            let id = req.query.id;
+            let password = req.query.password;
+
+            // Check if result is within allowed limit
+            if (result > MAX_RESULTS && (!password || !PASSWORD.includes(password))) {
+                res.json({success: false, error: `Parameter value not allowed. Maximum value for "result" is ${MAX_RESULTS}.`});
+                return;
+            }
+
+            try {
+                let docs;
+                // If id is provided, fetch specific document, else fetch random documents
+                if (id) {
+                    docs = await db.collection('Singleliner').find({ id: id }).toArray();
+                } else {
+                    docs = await db.collection('Singleliner').aggregate([{ $sample: { size: result } }]).toArray();
+                }
+                res.json({success: true, jokes: docs});
+            } catch (err) {
+                console.error(err);
+                res.json({ success: false, error: 'Error fetching data from the database' });
+            }
+        });
+
+        // Define '/api/jokes' route
+        app.get('/api/jokes', async (req, res) => {
+            // Parse query parameters
+            let result = parseInt(req.query.result) || 1;
+            let id = req.query.id;
+            let password = req.query.password;
+
+            // Check if result is within allowed limit
+            if (result > MAX_RESULTS && (!password || !PASSWORD.includes(password))) {
+                res.json({success: false, error: `Parameter value not allowed. Maximum value for "result" is ${MAX_RESULTS}.`});
+                return;
+            }
+
+            try {
+                let docs;
+                // If id is provided, fetch specific document, else fetch random documents
+                if (id) {
+                    docs = await db.collection('Jokes').find({ id: id }).toArray();
+                } else {
+                    docs = await db.collection('Jokes').aggregate([{ $sample: { size: result } }]).toArray();
+                }
+                res.json({success: true, jokes: docs});
+            } catch (err) {
+                console.error(err);
+                res.json({ success: false, error: 'Error fetching data from the database' });
+            }
+        });
+
+        // Define '/api/random' route
+        app.get('/api/random', async (_, res) => {
+            // Randomly select a collection
+            const collectionName = Math.random() < 0.5 ? 'Singleliner' : 'Jokes';
+            try {
+                // Fetch a random document from the selected collection
+                const result = await db.collection(collectionName).aggregate([{ $sample: { size: 1 } }]).toArray();
+                res.json({ success: true, joke: result[0] });
+            } catch (err) {
+                console.error(err);
+                res.json({ success: false, error: 'Error fetching data from the database' });
+            }
+        });
+
+        // Define 404 route
+        app.use((_, res, __) => {
+            res.status(404).sendFile(path.join(__dirname + '/404.html'));
+        });
+
+        // Start the server
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+
+    } catch (err) {
+        console.error('Error connecting to MongoDB:', err);
     }
+})();
 
-    if (id) {
-        sql = `SELECT * FROM singleliner WHERE id = ${id}`;
-    } else {
-        sql = `SELECT * FROM singleliner ORDER BY RANDOM() LIMIT ${result}`;
-    }
-
-    singleLinerDb.all(sql, [], (err, rows) => {
-        if (err) {
-            throw err;
-        }
-        res.json({success: true, jokes: rows});
-    });
-});
-
-app.get('/api/jokes', (req, res) => {
-    let result = req.query.result || 1;
-    let id = req.query.id;
-    let password = req.query.password;
-    let sql;
-
-    if (result > MAX_RESULTS && (!password || !PASSWORD.includes(password))) {
-        res.json({success: false, error: `Parameter value not allowed. Maximum value for "result" is ${MAX_RESULTS}.`});
-        return;
-    }
-
-    if (id) {
-        sql = `SELECT * FROM jokes WHERE id = ${id}`;
-    } else {
-        sql = `SELECT * FROM jokes ORDER BY RANDOM() LIMIT ${result}`;
-    }
-
-    jokesDb.all(sql, [], (err, rows) => {
-        if (err) {
-            throw err;
-        }
-        res.json({success: true, jokes: rows});
-    });
-});
-
-app.get('/api/random', (req, res) => {
-    // Randomly select a database
-    let db = Math.random() < 0.5 ? singleLinerDb : jokesDb;
-    let tableName = db === singleLinerDb ? 'singleliner' : 'jokes';
-
-    let sql = `SELECT * FROM ${tableName} ORDER BY RANDOM() LIMIT 1`;
-
-    db.all(sql, [], (err, rows) => {
-        if (err) {
-            throw err;
-        }
-        res.json({success: true, joke: rows[0]});
-    });
-});
-app.use(function (req, res, next) {
-    res.status(404).sendFile(path.join(__dirname+'/404.html'));
-});
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
-
+// Close MongoDB connection on process termination
 process.on('SIGINT', () => {
-    singleLinerDb.close();
-    jokesDb.close();
+    client.close();
     process.exit();
 });
