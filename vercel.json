@@ -1,20 +1,35 @@
 {
-  "version": 2,
-  "name": "jokes-api",
-  "builds": [
-    {
-      "src": "app.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "app.py"
-    }
-  ],
-  "env": {
-    "FLASK_APP": "app.py",
-    "FLASK_ENV": "production"
-  }
+    "version": 2,
+    "builds": [
+      {
+        "src": "index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/singleliner",
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/singleliner/:id",
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/jokes",
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/jokes/:id",
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/random",
+        "dest": "index.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "index.js"
+      }
+    ]
 }

@@ -1,120 +1,82 @@
+# Joke API Documentation
 
-# Jokes API
+Welcome to the Joke API! This API allows you to retrieve random jokes and one-liners from two different databases. Below is the documentation to help you understand how to use the API effectively.
 
-This is a Flask app that provides two API routes to get random jokes or a specific joke by ID from two different databases, "jokes.db" and "singleliner.db".
+## Base URL
 
+The base URL for the API is `http://localhost:3000`. Make sure to prefix all endpoint paths with this base URL.
 
-## Installation
+## Authentication
 
-#### 1. Clone this repository.
+To access certain features of the API, you need to provide a password in the request. This password is set as an environment variable and is required for security. Make sure to include it as a query parameter when necessary.
 
+## Endpoints
+
+### 1. Get Random Singleliner Joke
+
+- **Endpoint:** `/api/singleliner`
+- **Method:** `GET`
+- **Parameters:**
+  - `result` (optional): Number of jokes to retrieve (default is 1).
+  - `id` (optional): Retrieve a specific joke by ID.
+  - `password` (optional but required for `result` > `MAX_RESULTS`): Password for secure access.
+- **Response:**
+  - Success: Returns an array of single-liner jokes.
+  - Failure: Returns an error message.
+
+### 2. Get Random Joke
+
+- **Endpoint:** `/api/jokes`
+- **Method:** `GET`
+- **Parameters:**
+  - `result` (optional): Number of jokes to retrieve (default is 1).
+  - `id` (optional): Retrieve a specific joke by ID.
+  - `password` (optional but required for `result` > `MAX_RESULTS`): Password for secure access.
+- **Response:**
+  - Success: Returns an array of jokes.
+  - Failure: Returns an error message.
+
+### 3. Get Random Joke from Either Database
+
+- **Endpoint:** `/api/random`
+- **Method:** `GET`
+- **Response:**
+  - Success: Returns a single joke object.
+  - Failure: Returns an error message.
+
+## Example Usage
+
+### Fetch a Random Singleliner Joke
 
 ```bash
-git clone https://github.com/Swastikdan/Random-Jokes-Api.git
-
+curl http://localhost:3000/api/singleliner
 ```
-#### 2. Navigate to the project directory.
+
+### Fetch 3 Random Jokes
+
 ```bash
-cd Random-Jokes-Api
-
+curl http://localhost:3000/api/jokes?result=3
 ```
-#### 3. Install the required dependencies.
+
+### Fetch a Random Joke Without Authentication
+
 ```bash
-pip install -r requirements.txt
-
-```
-## Live Preview
-You can try out this application live  at the following links:
-
-``` 
-https://jokemasterapi.vercel.app/api/jokes
-
+curl http://localhost:3000/api/random
 ```
 
+### Fetch a Joke by ID
 
-``` 
-https://jokemasterapi.vercel.app/api/singleliner
-
-```
-Please note that the demo version may not have the full functionality of the locally hosted version and may be slower due to the limitations of the hosting platform. Additionally, this demo version is intended for demonstration purposes only and is not intended for use in a production environment.
-## Usage
-
-##### To start the server, run:
-```python
-python app.py
-
-```
-The app will start running on ` http://localhost:5000/` 
-
-
-## API Endpoints
-Get a random joke or a specific joke by ID
--  `/api/jokes` 
--  ` /api/singleliner `
-Request parameters
-
-| Parameter | Example |Requests |
-|----------|----------|----------|
-| result	 | int	 | The number of jokes to return. Defaults to 1. |
-| id | int | The ID of a specific joke to return. |
-	
-Example Requests
-
-```
-/api/jokes?result=2
-```
-```
-/api/singleliner?id=3bf77
-```
-Example Response
-```
-[
-  {
-    "id": "ee1d3",
-    "punchline": "#3 Swim with the sharks,\n#2 Have an account on Ashley Madison, \n#1 riding a street car in Charlotte NC. \n",
-    "setup": "The Top Three things for Halloween you can do now in North Carolina:"
-  },
-  {
-    "id": "88720",
-    "punchline": "We played smash bros from 12 to 12!",
-    "setup": "My girlfriend told me, \"I wanna smash!\""
-  }
-]
+```bash
+curl http://localhost:3000/api/jokes?id=42&password=your_password
 ```
 
-```
-[
-  {
-    "id": "3bf77",
-    "joke": "Married Couple Friend:hey how's your married life buddy..... Jhon: 20 years before it was like heaven ....... 20 years after no fucks given"
-  }
-]
+## Error Handling
 
-```
+In case of an error, the API will return a JSON response with a `success` field set to `false` and an `error` field providing a descriptive error message.
 
-## Database Schema
+## Important Notes
 
-The "jokes.db" database has a table called "jokes" with the following columns:
+- Ensure proper authentication by including the `password` parameter when required.
+- Respect rate limiting to avoid getting blocked.
 
-| Column | Type	 | Description |
-|----------|----------|----------|
-| id | int| The unique ID of the joke. |
-| setup| text | The setup of the joke. |
-| punchline | text | The punchline of the joke. |
-
-The "singleliner.db" database has a table called "singleliner" with the following columns:
-
-| Column | Type	 | Description |
-|----------|----------|----------|
-| id | int| The unique ID of the single-liner joke. |
-| joke| text | The text of the single-liner joke. |
-
-## Contributing
-
-Contributions are always welcome!
-
-## License
-
-This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
-
-
+Feel free to experiment with the API and integrate it into your projects. If you encounter any issues or have questions, please refer to the [GitHub repository](https://github.com/your-username/joke-api) or open an [issue](https://github.com/your-username/joke-api/issues). Happy joking!

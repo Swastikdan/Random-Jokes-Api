@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="url(#icon-gradient-7ajsi4vx)" fill="url(#icon-gradient-7ajsi4vx)" style="--size:1.6em" class="astro-patnjmll" data-astro-cid-patnjmll="">
+    <g data-astro-cid-patnjmll="">
+        <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m80 96 40 32-40 32m56 0h40"></path>
+        <rect width="192" height="160" x="32" y="48" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16.97" rx="8.5"></rect>
+    </g>
+    <linearGradient id="icon-gradient-7ajsi4vx" x1="23" x2="235" y1="43" y2="202" gradientUnits="userSpaceOnUse" data-astro-cid-patnjmll="">
+        <stop stop-color="#007BFF" data-astro-cid-patnjmll=""></stop> <!-- Light Blue -->
+        <stop offset=".5" stop-color="#0056b3" data-astro-cid-patnjmll=""></stop> <!-- Medium Blue -->
+        <stop offset="1" stop-color="#ae5dd9" data-astro-cid-patnjmll=""></stop> <!-- Dark Blue -->
+    </linearGradient>
+</svg>
