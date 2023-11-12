@@ -6,9 +6,6 @@ Welcome to the Joke API! This API allows you to retrieve random jokes and one-li
 
 The base URL for the API is `http://localhost:3000`. Make sure to prefix all endpoint paths with this base URL.
 
-## Authentication
-
-To access certain features of the API, you need to provide a password in the request. This password is set as an environment variable and is required for security. Make sure to include it as a query parameter when necessary.
 
 ## Endpoints
 

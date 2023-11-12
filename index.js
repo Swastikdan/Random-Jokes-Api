@@ -132,32 +132,11 @@ async function handleJokeRequest(db, collectionName, req, res) {
 
     // Define 404 route
     app.all("/api/*", (_, res) => {
-      res
-        .status(404)
-        .set("Content-Type", "text/xml")
-        .send(
-          xml({
-            error: [
-              {
-                message: "Sorry, the route you are looking for does not exist.",
-              },
-              {
-                availableRoutes: [
-                  { route: "/api/singleliner" },
-                  { route: "/api/jokes" },
-                  { route: "/api/random" },
-                ],
-              },
-              {
-                documentation: "https://github.com/Swastikdan/Random-Jokes-Api",
-              },
-            ],
-          })
-        );
+      res.redirect("https://www.swastikdan.in/projects/api-doc/random-joke-api");
     });
 
     app.get("*", (req, res) => {
-      res.redirect("http://www.swastikdan.in");
+      res.redirect("https://www.swastikdan.in/projects/api-doc/random-joke-api");
     });
     app.use((err, req, res, next) => {
       console.error(err.stack); // Log error stack trace to the console
